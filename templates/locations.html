@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Locations</title>
+</head>
+<body>
+	<h1>Stored Locations</h1>
+	<ul>
+		{% for row in rows %}
+		<li>Name: {{row[1]}}, Address: {{row[2]}}, Subname: {{row[3]}}</li>
+		{% endfor %}
+	</ul>
+</body>
+</html>
