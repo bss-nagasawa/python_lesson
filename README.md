@@ -1,26 +1,20 @@
 # Project Title
 
-Short description or tagline about the project.
+このプロジェクトは、地理的な位置情報を管理するためのアプリケーションです。ユーザーは地点を登録し、それらの位置情報を基に様々な分析を行うことができます。
 
 ## Table of Contents
 
 - [Installation](#installation)
 - [Usage](#usage)
+- [Database Structure](#database-structure)
 - [Contributing](#contributing)
 - [License](#license)
 
 ## Installation
 
-Provide instructions on how to install and setup the project. Include any prerequisites or dependencies that need to be installed, as well as the installation process itself.
+このプロジェクトを実行するには、Python 3.8 以上が必要です。また、SQLite をデータベースとして使用しています。
 
-## Usage
-
-Provide examples or usage instructions for the project. Include any necessary configuration or settings that the user needs to be aware of.
-
-## Contributing
-
-Provide guidelines for how others can contribute to the project. This can include information on how to report bugs, submit feature requests, or contribute code.
-
-## License
-
-Include information about the project's license. This can be a brief summary of the license, or a link to the full license text.
+1. 依存関係のインストール:
+   ```bash
+   pip install -r requirements.txt
+   ```
