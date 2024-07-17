@@ -70,5 +70,17 @@ def locations():
 	# 取得したデータをlocations.htmlテンプレートに渡す
 	return render_template('locations.html', rows=rows)
 
+@app.route('/location/<int:id>')
+def location_detail(id):
+    conn = sqlite3.connect('location.db')
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM locations WHERE id = ?", (id,))
+    row = cursor.fetchone()
+    conn.close()
+    if row:
+        return render_template('locationDetail.html', row=row)
+    else:
+        return "Location not found", 404
+
 if __name__ == '__main__':
 	app.run(debug=True)

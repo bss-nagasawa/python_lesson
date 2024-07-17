@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Location Detail</title>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB4MUe3ZTOSkkZwRYVlNUStuZ3tMKFFXsg&callback=initMap" async defer></script>
+	<script>
+		function initMap() {
+			var location = {lat: {{ row[4] }}, lng: {{ row[5] }}};
+			var map = new google.maps.Map(document.getElementById('map'), {
+				zoom: 15,
+				center: location
+			});
+            var marker = new google.maps.Marker({ // ここをMarkerに修正
+                position: location,
+                map: map
+            });
+		}
+	</script>
+</head>
+<body>
+	<h1>Location Detail</h1>
+	<p>Name: {{ row[1] }}</p>
+	<p>Address: {{ row[2] }}</p>
+	<p>Subname: {{ row[3] }}</p>
+	<p>Latitude: {{ row[4] }}</p>
+	<p>Longitude: {{ row[5] }}</p>
+	<div id="map" style="height: 400px; width: 100%;"></div>
+	<a href="/locations">戻る</a>
+</body>
+</html>
