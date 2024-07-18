@@ -4,3 +4,5 @@ venv/
 # キャッシュファイルを無視する
 *.pyc
 __pycache__/
+
+.env
