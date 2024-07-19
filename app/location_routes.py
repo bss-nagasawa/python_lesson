@@ -1,4 +1,3 @@
-# location_routes.py
 from flask import render_template
 import sqlite3
 from flask import Blueprint
