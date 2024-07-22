@@ -4,6 +4,7 @@ from app.get_location import get_location_info
 from app.locations import locations
 from app.location_routes import location_bp
 from datetime import timedelta
+from werkzeug.security import generate_password_hash, check_password_hash
 import sqlite3
 import os
 
@@ -45,7 +46,6 @@ def index():
             error_message = "指定された住所の位置情報を取得できませんでした。"
     return render_template('index.html', error_message=error_message)
 
-
 @app.route('/location/<int:id>')
 def location_detail(id):
     conn = sqlite3.connect('location.db')
@@ -70,10 +70,7 @@ def login():
         user = conn.execute('SELECT * FROM users WHERE user_mail = ?', (user_mail,)).fetchone()
         conn.close()
 
-        if user is None:
-            message = 'Invalid email or password'
-            return render_template('login.html', message=message)
-        elif user[2] != user_pass:
+        if user is None or not check_password_hash(user[2], user_pass):
             message = 'Invalid email or password'
             return render_template('login.html', message=message)
         else:
@@ -105,8 +102,16 @@ def user_regist():
         user_mail = request.form['user_mail']
         user_pass = request.form['user_pass']
 
+        hashed_password = generate_password_hash(user_pass)  # パスワードをハッシュ化
+
         conn = get_db_connection()
-        conn.execute('INSERT INTO users (user_name, user_mail, user_pass) VALUES (?, ?, ?)', (user_name, user_mail, user_pass))
+        existing_user = conn.execute('SELECT * FROM users WHERE user_mail = ?', (user_mail,)).fetchone()
+        if existing_user:
+            # 既に存在する場合はエラーメッセージを表示
+            return render_template('user_regist.html', error="このメールアドレスは既に登録されています。")
+
+        hashed_password = generate_password_hash(user_pass)
+        conn.execute('INSERT INTO users (user_name, user_mail, user_pass) VALUES (?, ?, ?)', (user_name, user_mail, hashed_password))
         conn.commit()
         conn.close()
 
