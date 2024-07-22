@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>User Registration</title>
+    <title>地点登録アプリ|ユーザー登録画面</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h1>User Registration</h1>
+    <h1>ユーザー登録</h1>
     <form action="/user_regist" method="post">
         <label for="user_name">Name:</label>
         <input type="text" id="user_name" name="user_name" required>

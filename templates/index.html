@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Location Form</title>
+	<title>地点登録アプリ|登録画面</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-	<h1>Location Registration</h1>
+	<h1>地点登録</h1>
 	<form action="/" method="post">
 		<label for="name">Name:</label>
 		<input type="text" id="name" name="name" required>
@@ -12,7 +13,7 @@
 		<input type="text" id="subname" name="subname" required>
 		<input type="submit" value="Submit">
 	</form>
-	<a href="/locations">登録地点一覧</a>
+	<a href="/locations" class="btn btn-primary">登録地点一覧</a>
 	<hr>
 	<a href="/logout" class="btn btn-primary">ログアウト</a>
 </body>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Location Detail</title>
+	<title>地点登録アプリ|地点詳細画面</title>
 	<script src="https://maps.googleapis.com/maps/api/js?key={{ api_key }}&callback=initMap" async defer></script>
 	<script>
 		function initMap() {
@@ -16,15 +16,16 @@
             });
 		}
 	</script>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-	<h1>Location Detail</h1>
+	<h1>{{ row[3] }}の詳細</h1>
 	<p>Name: {{ row[1] }}</p>
 	<p>Address: {{ row[2] }}</p>
 	<p>Subname: {{ row[3] }}</p>
 	<p>Latitude: {{ row[4] }}</p>
 	<p>Longitude: {{ row[5] }}</p>
 	<div id="map" style="height: 400px; width: 100%;"></div>
-	<a href="/locations">戻る</a>
+	<a href="/locations" class="btn btn-primary">戻る</a>
 </body>
 </html>

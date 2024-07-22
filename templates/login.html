@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login</title>
+    <title>地点登録アプリ|ログイン画面</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     {% if message %}
@@ -9,7 +10,7 @@
         alert("{{ message }}");
     </script>
     {% endif %}
-    <h1>Login</h1>
+    <h1>ユーザーログイン</h1>
     <form action="/login" method="post">
         <label for="user_mail">Email:</label>
         <input type="email" id="user_mail" name="user_mail" required>

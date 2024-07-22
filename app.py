@@ -1,24 +1,30 @@
 from flask import Flask, request, render_template, redirect, url_for, session
+from dotenv import load_dotenv
 from app.get_location import get_location_info
 from app.locations import locations
 from app.location_routes import location_bp
+from datetime import timedelta
 import sqlite3
 import os
 
-app = Flask(__name__)
+load_dotenv()
+
+app = Flask(__name__, static_folder='assets')
+# セッションの有効期限を24時間に設定
+app.permanent_session_lifetime = timedelta(hours=24)
 
 app.add_url_rule('/locations', 'locations', locations)
 app.register_blueprint(location_bp)
 
 def get_db_connection():
-    db_path = 'location.db'  # データベースファイルへのパスを適切に設定してください。
+    db_path = 'location.db'
     conn = None
     try:
         conn = sqlite3.connect(db_path)
         conn.row_factory = sqlite3.Row
-        print("データベースに接続しました。")  # コンソールに出力
+        print("データベースに接続しました。")
     except sqlite3.Error as e:
-        print(f"データベース接続エラー: {e}")  # コンソールにエラーを出力
+        print(f"データベース接続エラー: {e}")
     return conn
 
 @app.route('/', methods=['GET', 'POST'])
@@ -31,7 +37,8 @@ def index():
 
         if address is not None:
             with get_db_connection() as conn:
-                conn.execute("INSERT INTO locations (name, address, subname, latitude, longitude) VALUES (?, ?, ?, ?, ?)", (name, address, subname, latitude, longitude))
+                user_id = session.get('user_id')
+                conn.execute("INSERT INTO locations (name, address, subname, latitude, longitude, user_id) VALUES (?, ?, ?, ?, ?, ?)", (name, address, subname, latitude, longitude, user_id))
                 conn.commit()
             return redirect(url_for('locations'))
         else:
@@ -54,23 +61,25 @@ def location_detail(id):
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    message = None  # メッセージの初期化
+    message = None
     if request.method == 'POST':
         user_mail = request.form['user_mail']
         user_pass = request.form['user_pass']
 
-        conn = get_db_connection()
+        conn = sqlite3.connect('location.db')
         user = conn.execute('SELECT * FROM users WHERE user_mail = ?', (user_mail,)).fetchone()
         conn.close()
 
-        # パスワードのハッシュ化を確認する代わりに、データベースのパスワードと直接比較
-        if user is None or user['user_pass'] != user_pass:
+        if user is None:
             message = 'Invalid email or password'
-            return render_template('login.html', message=message)  # 失敗メッセージを渡す
+            return render_template('login.html', message=message)
+        elif user[2] != user_pass:
+            message = 'Invalid email or password'
+            return render_template('login.html', message=message)
         else:
-            session['user_id'] = user['user_id']
-            message = 'Login successful'
-            return redirect(url_for('locations', message=message))  # 成功メッセージを渡す
+            session.permanent = True  # セッションの永続性を有効にする
+            session['user_id'] = user[0]
+            return redirect(url_for('locations'))
 
     return render_template('login.html', message=message)
 
@@ -82,7 +91,7 @@ def logout():
     return redirect(url_for('login'))
 
 # Flaskの秘密鍵を設定（セッション管理に必要）
-app.secret_key = os.urandom(24)
+app.secret_key = os.getenv('SECRET_KEY')
 @app.before_request
 def require_login():
     allowed_routes = ['login', 'user_regist']
