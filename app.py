@@ -11,7 +11,7 @@ app.add_url_rule('/locations', 'locations', locations)
 app.register_blueprint(location_bp)
 
 def get_db_connection():
-    db_path = 'users.db'  # データベースファイルへのパスを適切に設定してください。
+    db_path = 'location.db'  # データベースファイルへのパスを適切に設定してください。
     conn = None
     try:
         conn = sqlite3.connect(db_path)
