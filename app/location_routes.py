@@ -1,7 +1,5 @@
-# location_routes.py
-from flask import render_template
+from flask import render_template, Blueprint
 import sqlite3
-from flask import Blueprint
 import os
 
 location_bp = Blueprint('location_bp', __name__)

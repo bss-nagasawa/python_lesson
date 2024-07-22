@@ -1,17 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Locations</title>
+	<title>地点登録アプリ|登録地点一覧</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-	<h1>Stored Locations</h1>
+	<h1>地点一覧</h1>
 	<ul>
-		{% for row in rows %}
+		<h2>自分の登録地点</h2>
+		{% for row in user_rows %}
 		<li>Name: {{row[1]}}, Address: {{row[2]}}, Subname: {{row[3]}}
 			<a href="{{ url_for('location_detail', id=row[0]) }}">View Details</a>
 		</li>
 		{% endfor %}
 	</ul>
-	<a href="/">戻る</a>
+	<ul>
+		<h2>自ほかの人の登録地点</h2>
+		{% for row in other_rows %}
+		<li>Name: {{row[1]}}, Address: {{row[2]}}, Subname: {{row[3]}}
+			<a href="{{ url_for('location_detail', id=row[0]) }}">View Details</a>
+		</li>
+		{% endfor %}
+	</ul>
+	<a href="/"  class="btn btn-primary">戻る</a>
 </body>
 </html>
